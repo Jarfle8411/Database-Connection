@@ -1,0 +1,141 @@
+using System; 
+
+using System.Collections.Generic; 
+
+using System.Data.SqlClient; 
+
+using System.Linq; 
+
+using System.Text; 
+
+ 
+
+namespace BLUE 
+
+{ 
+
+    class Program 
+
+    { 
+
+        static void Main(string[] args) 
+
+        { 
+
+            SqlConnection myConnection = new SqlConnection( 
+
+                "trusted_Connection = yes;" + 
+
+                "Server=localhost;" + 
+
+                "Database = Demonstration_EcPI;" + 
+
+                "Connection timeout =10"); 
+
+ 
+
+            try 
+
+            { 
+
+                myConnection.Open(); 
+
+                Console.WriteLine("Connection is open to Database...."); 
+
+ 
+
+                string insertRecord = @" insert into Instructors 
+
+(Lastname, FirstName, Title, Teach) 
+
+values ('Goins', 'Jackson','Student', 'CIS420')"; 
+
+ 
+
+                SqlCommand cmd1 = new SqlCommand(insertRecord, myConnection); 
+
+ 
+
+                cmd1.ExecuteNonQuery(); 
+
+ 
+
+ 
+
+                SqlCommand cmd = new SqlCommand("select FirstName, LastName, Title, Teach from Instructor orderby LastName", myConnection); 
+
+ 
+
+                SqlDataReader rdr = null; 
+
+                rdr = cmd.ExecuteReader(); 
+
+ 
+
+                Console.Clear(); 
+
+                Console.WriteLine("First       Last        Title         Teach"); 
+
+                Console.WriteLine("###################################################################################################################"); 
+
+                while (rdr.Read()) 
+
+                { 
+
+ 
+
+                    string FirstName = (string)rdr["FirstName"]; 
+
+                    string LastName = (string)rdr["LastName"]; 
+
+                    string Title = (string)rdr["Title"]; 
+
+                    string Teach = (string)rdr["Teach"]; 
+
+ 
+
+ 
+
+ 
+
+                    Console.Write("0,-10", FirstName); 
+
+                    Console.Write("0,-12", LastName); 
+
+                    Console.Write("0,-12", Title); 
+
+                    Console.Write("0,-20", Teach); 
+
+                    Console.WriteLine(); 
+
+                } 
+
+            } 
+
+ 
+
+            catch (Exception e) 
+
+            { 
+
+                Console.WriteLine(e.ToString()); 
+
+            } 
+
+            finally 
+
+            { 
+
+                myConnection.Close(); 
+
+                Console.WriteLine("\n\nConnection to Database is closed......"); 
+
+            } 
+
+        } 
+
+    } 
+
+} 
+
+ 
